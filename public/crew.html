@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3</title>
+    <meta charset="utf-8">
+     <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico?v="+ Math.trunc(Math.random()*999)>
+    
+  </head>
+  <body>
+     <div class = "container text-center"><font size = "6"><h1>Pirate Crew Generator</h1></font></div>
+    <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+    <form id ="data" action="/addcrewmem" method="POST" target="hiddenFrame">
+      <div class="col is-center">
+      <div class="col-3 is-center"> <select id = "rank" name="rank">
+        <option value="Captain">Captain</option>
+        <option value="First Mate">First Mate</option>
+        <option value="Sailing Master">Sailing Master</option>
+        <option value="Quartermaster">Quartermaster</option>
+         <option value="Boatswain">Boatswain</option>
+        <option value="Cook">Cook</option>
+         <option value="Doctor">Doctor</option>
+         <option value="Carpenter">Carpenter</option>
+        <option value="Powder Monkey">Powder Monkey</option>
+         <option value="Sailor">Sailor</option>
+         <option value="Cabin Boy">Cabin Boy</option>
+      </select> </div>
+      <div class="col-3 is-center"><input type="name" id="name" name="name" placeholder="Name Here"></div>
+     <div class="col-3 is-center"> <input type="number" id="year" name="year" placeholder="Year of birth here"></div>
+      <div><input type="hidden" id="rankID" name="rankID" value=""></div>
+        </div>
+    </form>
+    <div class = "col is-center">
+    <button id="submit" class="button" onclick="submitNClear()" > Submit </button>
+    <button id="modify" class="button" onclick="modify()" > Modify </button>
+    <button id="delete" class="button" onclick="deleteData()" > Delete </button>
+    </div>
+    
+    <div class="col is-center">
+    <table id = "table" >
+    <th>Rank</th>
+    <th>Name</th> 
+    <th>Year Born</th>
+    <th>Age</th>
+    </table>
+      </div>
+    
+  </body>
+  
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
+  
+  <script>
+    
+  function deleteData(){
+    if(document.querySelector('#name').value == ''){
+      alert("Enter the member you with to delete")
+      return false
+    }
+    
+      if(!checkIfIn(document.querySelector('#name').value)){
+        alert("That member is already not in the table")
+        return false
+      }
+      document.getElementById('data').action = '/delcrewmem'
+      console.log(document.getElementById('data').action)
+      document.getElementById('data').submit()
+      document.getElementById('data').reset()
+      $("#table_of_items tr").remove();
+     reloadData()
+  }
+    
+  function modify(){
+    if(document.querySelector('#name').value!= '' && document.querySelector( '#year').value !='') {
+      if(isNaN(document.querySelector( '#year').value)){
+        alert("Year must be numbers")
+        return false
+      }else if(document.querySelector( '#year').value > 2019){
+        alert("Year must be before 2019")
+        return false
+      }
+      
+        if(!checkIfIn(document.querySelector('#name').value)){
+        alert("You can only modify crew members that are in the table")
+        return false
+      }
+      document.getElementById('data').action = '/modcrewmem'
+      document.getElementById('data').submit()
+      document.getElementById('data').reset()
+      $("#table_of_items tr").remove();
+      reloadData()
+    return false
+    }else{
+      alert("Please fill in all text boxes to modify an entry")
+    }
+    return false
+  }
+    
+  function submitNClear(){
+    if(document.querySelector('#name').value!= '' && document.querySelector( '#year').value !='') {
+      if(isNaN(document.querySelector( '#year').value) ){
+        alert("Year must be numbers")
+        return false
+      }else if(document.querySelector( '#year').value > 2019){
+        alert("Year must be before 2019")
+        return false
+      }
+      
+      if(checkIfIn(document.querySelector('#name').value)){
+        alert("That person is already in the table")
+        return false
+      }
+      
+        var x = document.getElementById("rank").selectedIndex;
+        var y = document.getElementById("rank").options;
+      
+      document.getElementById("rankID").value = y[x].index
+      console.log(document.getElementById("rankID").value)
+      console.log(document.getElementById('data'))
+      console.log(document.querySelector('#name'))
+      document.getElementById('data').submit()
+      console.log("SUBMITTED")
+      document.getElementById('data').reset()
+      $("#table_of_items tr").remove();
+      console.log("Reloading Data")
+      reloadData()
+      console.log("Reloaded Data")
+    return false
+    }else{
+      alert("Please fill in all text boxes")
+    }
+    return false
+  } 
+     
+    
+  function reloadData(){
+    console.log("Getting Data");
+    $.get('/crewdata', function(data) {
+      clearTable(document.getElementById("table").rows.length - 1)
+      data.forEach(function(car){
+        if(jQuery.isEmptyObject(car))
+          return
+        console.log(car)
+        $('#table').append('<tr><td>' + car.rank +'</td><td>' + car.name +'</td><td>' + car.year +'</td><td>'+ car.age +'</td></tr>')             
+      })
+    });
+  }
+    
+  function clearTable(rowNum){
+    for(let i = 0; i < rowNum; i++)
+      document.getElementById("table").deleteRow(1)
+  }
+    
+ function checkIfIn(name){
+   console.log(name)
+    for(let i = 1; i<document.getElementById("table").rows.length;i++){
+      console.log(document.getElementById("table").rows[i].cells[1].innerText)
+      if(document.getElementById("table").rows[i].cells[1].innerText == name)
+         return true
+    }
+      return false;
+  }
+    
+  window.onload = function() {
+    $.get("/userData", function(user){
+      console.log(user)
+      if(user === "")
+      window.location.replace("https://a3-brian-earl.glitch.me");
+    })
+    reloadData()
+  }
+    
+  </script>
+  
+  
+</html>

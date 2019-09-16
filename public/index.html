@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3</title>
+    <meta charset="utf-8">
+     <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico?v="+ Math.trunc(Math.random()*999)>
+    
+  </head>
+  <body>
+    <div class = "container text-center"><font size = "6"><h1>Pirate Crew Generator</h1></font></div>
+    <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+    <form id ="data" action="/login" method="POST" >
+      <div class="row is-center">
+      <div class="col-3"><input type="name" id="username" name="username" placeholder="Username"></div>
+      <div class="col-3"><input type="password" id="password" name="password" placeholder="Password"></div>
+        </div>
+    </form>
+    <div class = "col is-center">
+      <a>        </a>
+    </div>
+    <div class = "col is-center">
+    <button id="login" class="button" onclick="login()" > Login </button>
+    <button id="signup" class="button" onclick="signup()"> Signup </button>
+      </div>
+  </body>
+  
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
+  
+  <script>
+    
+    function login(){
+      document.getElementById('data').action = '/login'
+      document.getElementById('data').submit()
+      document.getElementById('data').reset()
+      console.log("Hi")
+    }
+    
+    function signup(){
+      document.getElementById('data').action = '/signup'
+      document.getElementById('data').submit()
+      document.getElementById('data').reset()
+    }
+  </script>
+  
+</html>

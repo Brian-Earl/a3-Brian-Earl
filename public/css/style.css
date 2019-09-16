@@ -1,0 +1,12 @@
+/*Style your own assignment! This is fun! */
+@import "~chota/dist/chota.css";
+
+body {
+	background-color: #231F18;
+  font-family: "Helvetica", sans-serif;
+	color: #fff8c1;
+}
+
+a{
+  color: #fff8c1;
+}
