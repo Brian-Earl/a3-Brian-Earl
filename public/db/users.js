@@ -1,9 +1,6 @@
 
 
-var users =  [
-    { id: 1, username: 'jack', password: 'secret', crew:[]}
-  , { id: 2, username: 'jill', password: 'birthday', crew: []}
-];
+var users
 
 exports.findById = function(id, cb) {
   process.nextTick(function() {
