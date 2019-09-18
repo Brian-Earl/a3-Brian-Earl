@@ -25,3 +25,4 @@ https://a3-brian-earl.glitch.me/
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: Implemented the Chota CSS framework and almost entirely style the HTML within the HTML files themselves, a CSS file is only used to change the color of certain elements
 - **Design Achievement 2**: Disallowed invalid actions such as trying to delete or modifying a crew memvers who are not in the table or adding a crew member that is already in the table by using alerts telling the user that their input is invalid
+- **Design Achievement 3**: If users try to go to any .html while they aren't logged in, it will redirect them back to the log in page
